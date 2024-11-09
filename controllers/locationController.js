@@ -8,9 +8,21 @@ const Location = require("../models/Location");
  */
 exports.getAllCountrys = async (req, res) => {
   try {
-    const countrys = await Location.find().select("country");
+    const result = await Location.find().select("country");
 
-    res.status(200).json({ success: true, data: countrys });
+    if (result) {
+      let countrys = [{ value: "All", label: "All" }];
+
+      for (let { country, id } of result) {
+        countrys.push({
+          value: country,
+          label: country,
+          _id: id,
+        });
+      }
+
+      res.status(200).json({ success: true, data: countrys });
+    }
   } catch (error) {
     res
       .status(500)

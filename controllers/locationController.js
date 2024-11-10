@@ -79,9 +79,8 @@ exports.getAllDistrictsByCountryAndDivisionId = async (req, res) => {
         .json({ success: false, message: "Division district not found" });
     }
 
-    res
-      .status(200)
-      .json({ success: true, data: country.divisions[0].districts });
+    const division = country?.divisions.id(req.params.divisionId);
+    res.status(200).json({ success: true, data: division });
   } catch (error) {
     if (error.kind === "ObjectId") {
       return res

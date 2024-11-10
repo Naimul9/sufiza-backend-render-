@@ -3,16 +3,13 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 // Define the District schema
-const districtSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "District name is required."],
-      trim: true,
-    },
+const districtSchema = new Schema({
+  name: {
+    type: String,
+    required: [true, "District name is required."],
+    trim: true,
   },
-  { _id: false }
-);
+});
 
 // Define the Division schema
 const divisionSchema = new Schema({

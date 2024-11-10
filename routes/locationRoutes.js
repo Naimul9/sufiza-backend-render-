@@ -15,18 +15,24 @@ const router = express.Router();
 router.get("/countrys", locationController.getAllCountrys);
 
 /**
- * @route   GET /api/locations/divisions/:id
+ * @route   GET /api/locations/:countryId/divisions
  * @desc    Retrieve all divisions by country ID
  * @access  Public
  */
-router.get("/divisions/:id", locationController.getAllDivisionsByCountryId);
+router.get(
+  "/:countryId/divisions",
+  locationController.getAllDivisionsByCountryId
+);
 
 /**
- * @route   GET /api/locations/districts/:id
- * @desc    Retrieve all districts by country ID
+ * @route   GET /api/locations/:countryId/divisions/:divisionId/districts
+ * @desc    Retrieve all districts by country ID & division ID
  * @access  Public
  */
-router.get("/districts/:id", locationController.getAllDistrictsByCountryId);
+router.get(
+  "/:countryId/divisions/:divisionId/districts",
+  locationController.getAllDistrictsByCountryAndDivisionId
+);
 
 /**
  * @route   POST /api/locations

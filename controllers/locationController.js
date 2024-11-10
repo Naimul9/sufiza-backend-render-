@@ -31,13 +31,15 @@ exports.getAllCountrys = async (req, res) => {
 };
 
 /**
- * @route   GET /api/locations/divisions/:id
+ * @route   GET /api/locations/:countryId/divisions
  * @desc    Retrieve all divisions by country ID
  * @access  Public
  */
 exports.getAllDivisionsByCountryId = async (req, res) => {
   try {
-    const divisions = await Location.findById(req.params.id).select("division");
+    const divisions = await Location.findById(req.params.countryId).select(
+      "divisions.name divisions._id"
+    );
 
     if (!divisions) {
       return res
@@ -60,28 +62,32 @@ exports.getAllDivisionsByCountryId = async (req, res) => {
 };
 
 /**
- * @route   GET /api/locations/districts/:id
- * @desc    Retrieve all districts by country ID
+ * @route   GET /api/locations/:countryId/divisions/:divisionId/districts
+ * @desc    Retrieve all districts by country ID & division ID
  * @access  Public
  */
-exports.getAllDistrictsByCountryId = async (req, res) => {
+exports.getAllDistrictsByCountryAndDivisionId = async (req, res) => {
   try {
-    const districts = await Location.findById(req.params.id).select("district");
+    const country = await Location.findOne({
+      _id: req.params.countryId,
+      "divisions._id": req.params.divisionId,
+    });
 
-    if (!districts) {
+    if (!country || !country.divisions.length) {
       return res
         .status(404)
         .json({ success: false, message: "Division district not found" });
     }
 
-    res.status(200).json({ success: true, data: districts });
+    res
+      .status(200)
+      .json({ success: true, data: country.divisions[0].districts });
   } catch (error) {
     if (error.kind === "ObjectId") {
       return res
         .status(400)
         .json({ success: false, message: "Invalid country ID format" });
     }
-
     res.status(500).json({
       success: false,
       message: "Failed to fetch division districts",

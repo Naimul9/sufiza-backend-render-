@@ -13,6 +13,7 @@ const {
 } = require("./middleware/common/errorHandler");
 const connectDB = require("./config/database");
 const locationRoutes = require("./routes/locationRoutes");
+const apartmentRoutes = require("./routes/apartmentRoutes");
 
 // Initialize Express application
 const app = express();
@@ -54,6 +55,9 @@ app.get("/", (req, res) => res.send("Sufiza Server Running"));
 
 // Location-related API routes
 app.use("/api/locations", locationRoutes);
+
+// Apartment-related API routes
+app.use("/api/apartments", apartmentRoutes);
 
 // Custom 404 handler for unknown routes
 app.use(notFoundHandler);

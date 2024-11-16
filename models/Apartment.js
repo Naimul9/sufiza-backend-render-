@@ -134,8 +134,8 @@ const apartmentSchema = new mongoose.Schema(
         type: String,
         lowercase: true,
         enum: {
-          values: ["rent", "sale"],
-          message: "Objective status must be either 'rent' or 'sale'",
+          values: ["buy", "rent", "sell"],
+          message: "Objective status must be either 'buy' or 'sale' or 'sell'",
         },
         required: [true, "Objective status is required"],
       },

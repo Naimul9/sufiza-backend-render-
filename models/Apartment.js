@@ -34,6 +34,19 @@ const apartmentSchema = new mongoose.Schema(
       },
     },
     apartmentDetails: {
+      images: {
+        type: [String],
+        required: [true, "Images field is required"],
+        validate: {
+          validator: function (images) {
+            return images.every((image) =>
+              /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/.test(image)
+            );
+          },
+          message:
+            "All images must be valid URLs with supported formats (jpg, jpeg, png, gif, webp)",
+        },
+      },
       size: {
         type: Number,
         required: [true, "Size in square feet is required"],

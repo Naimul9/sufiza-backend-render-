@@ -35,9 +35,9 @@ exports.getAllApartments = async (req, res) => {
 
     // search by division or district
     if (division && country.toLowerCase() !== "all") {
-      query["address.divisionOrThana"] = division.toLowerCase();
+      query["address.division"] = division.toLowerCase();
     } else if (districts && country.toLowerCase() !== "all") {
-      query["address.divisionOrThana"] = districts.toLowerCase();
+      query["address.districtsOrThana"] = districts.toLowerCase();
     }
 
     // search by objective (buy, rent, sell)

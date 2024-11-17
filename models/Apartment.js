@@ -19,18 +19,24 @@ const apartmentSchema = new mongoose.Schema(
         trim: true,
         required: [true, "Area name is required"],
       },
-      divisionOrThana: {
-        type: String,
-        trim: true,
-        lowercase: true,
-        required: [true, "Division or Thana is required"],
-      },
       country: {
         type: String,
         trim: true,
         required: [true, "Country is required"],
         lowercase: true,
         default: "Bangladesh",
+      },
+      division: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        required: [true, "Division is required"],
+      },
+      districtsOrThana: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        required: [true, "Districts or Thana is required"],
       },
     },
     apartmentDetails: {

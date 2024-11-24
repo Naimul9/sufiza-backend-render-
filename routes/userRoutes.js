@@ -56,5 +56,12 @@ router.post("/login", userController.userLogin);
  */
 router.post("/logout", userController.userLogout);
 
+/**
+ * @route   POST /api/users/refresh
+ * @desc    Access token refresh of a logged user
+ * @access  Public
+ */
+router.post("/refresh", userController.AccessTokenRefresh);
+
 // Export the router
 module.exports = router;

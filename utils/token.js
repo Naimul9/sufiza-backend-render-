@@ -10,9 +10,7 @@ function generateTokens(user) {
   // Create Access Token (short lifespan)
   const accessToken = jwt.sign(
     {
-      id: user._id,
       email: user.email,
-      phone: user.phone,
       role: user.role,
     }, // Payload
 
@@ -26,8 +24,9 @@ function generateTokens(user) {
   // Create Refresh Token (long lifespan)
   const refreshToken = jwt.sign(
     {
-      id: user._id,
-    }, // Minimal payload
+      email: user.email,
+      role: user.role,
+    }, // Payload
 
     REFRESH_TOKEN_SECRET, // Secret key
 
@@ -37,6 +36,26 @@ function generateTokens(user) {
   return { accessToken, refreshToken };
 }
 
+// Verify Access Token
+function verifyAccessToken(token) {
+  try {
+    return jwt.verify(token, ACCESS_TOKEN_SECRET);
+  } catch (err) {
+    return null;
+  }
+}
+
+// Verify Refresh Token
+function verifyRefreshToken(token) {
+  try {
+    return jwt.verify(token, REFRESH_TOKEN_SECRET);
+  } catch (err) {
+    return null;
+  }
+}
+
 module.exports = {
   generateTokens,
+  verifyAccessToken,
+  verifyRefreshToken,
 };

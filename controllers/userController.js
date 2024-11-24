@@ -1,7 +1,7 @@
 // Internal imports
 const User = require("../models/User");
 const { hashPassword, comparePassword } = require("../utils/passwordManager");
-const { generateTokens } = require("../utils/token");
+const { generateTokens, verifyRefreshToken } = require("../utils/token");
 
 /**
  * @route   GET /api/users
@@ -158,12 +158,14 @@ exports.userLogin = async (req, res) => {
     // Store tokens to browser cookies
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
+      secure: true,
       signed: true,
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
+      secure: true,
       signed: true,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
@@ -186,4 +188,35 @@ exports.userLogout = async (req, res) => {
   res.clearCookie("refreshToken");
 
   res.status(200).json({ success: true, message: "Logged out successfully" });
+};
+
+/**
+ * @route   POST /api/users/refresh
+ * @desc    Access token refresh of a logged user
+ * @access  Public
+ */
+exports.AccessTokenRefresh = async (req, res) => {
+  const refreshToken = req.signedCookies.refreshToken;
+
+  if (!refreshToken)
+    return res
+      .status(401)
+      .json({ success: false, message: "No refresh token" });
+
+  try {
+    const user = verifyRefreshToken(refreshToken);
+
+    const { accessToken } = generateTokens(user);
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: true,
+      signed: true,
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    });
+
+    res.status(200).json({ success: true, message: "Access token refreshed" });
+  } catch (error) {
+    res.status(403).json({ success: false, message: "Invalid refresh token" });
+  }
 };

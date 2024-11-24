@@ -42,5 +42,19 @@ router.put("/:id", userController.updateUser);
  */
 router.delete("/:id", userController.deleteUser);
 
+/**
+ * @route   POST /api/users/login
+ * @desc    An register user login
+ * @access  Public
+ */
+router.post("/login", userController.userLogin);
+
+/**
+ * @route   POST /api/users/logout
+ * @desc    An logged user logout
+ * @access  Public
+ */
+router.post("/logout", userController.userLogout);
+
 // Export the router
 module.exports = router;

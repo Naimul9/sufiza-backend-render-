@@ -1,3 +1,4 @@
+// External imports
 const bcrypt = require("bcryptjs");
 
 // generate hashed password

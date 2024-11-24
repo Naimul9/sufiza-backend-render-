@@ -1,6 +1,7 @@
 // Internal imports
 const User = require("../models/User");
-const { hashPassword } = require("../utils/passwordManager");
+const { hashPassword, comparePassword } = require("../utils/passwordManager");
+const { generateTokens } = require("../utils/token");
 
 /**
  * @route   GET /api/users
@@ -135,4 +136,54 @@ exports.deleteUser = async (req, res) => {
 
     res.status(500).json({ success: false, message: "Failed to delete User" });
   }
+};
+
+/**
+ * @route   POST /api/users/login
+ * @desc    An register user login
+ * @access  Public
+ */
+exports.userLogin = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user || !(await comparePassword(req.body.password, user?.password))) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid credentials" });
+    }
+
+    const { accessToken, refreshToken } = generateTokens(user);
+
+    // Store tokens to browser cookies
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      signed: true,
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      signed: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    res
+      .status(200)
+      .json({ success: true, message: "Logged in successfully", data: user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to logged" });
+  }
+};
+
+/**
+ * @route   POST /api/users/logout
+ * @desc    An logged user logout
+ * @access  Public
+ */
+exports.userLogout = async (req, res) => {
+  res.clearCookie("accessToken");
+  res.clearCookie("refreshToken");
+
+  res.status(200).json({ success: true, message: "Logged out successfully" });
 };

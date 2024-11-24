@@ -1,5 +1,6 @@
 // Internal imports
 const User = require("../models/User");
+const { hashPassword } = require("../utils/passwordManager");
 
 /**
  * @route   GET /api/users
@@ -56,7 +57,12 @@ exports.getUserDetailsById = async (req, res) => {
  */
 exports.createUser = async (req, res) => {
   try {
-    const user = await User.create(req.body);
+    const password = await hashPassword(req.body.password);
+
+    const user = await User.create({
+      ...req.body,
+      password,
+    });
 
     res.status(201).json({
       message: "User created successfully",
@@ -64,8 +70,6 @@ exports.createUser = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    console.log(error);
-
     res.status(500).json({ success: false, message: "Failed to create user" });
   }
 };

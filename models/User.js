@@ -31,6 +31,18 @@ const userSchema = new mongoose.Schema(
       ],
     },
 
+    avatar: {
+      type: String,
+      required: [true, "Avatar is required"],
+      default: "https://avatar.iran.liara.run/public/boy",
+      validate: {
+        validator: function (v) {
+          return /^https:\/\//.test(v); // Ensures the URL starts with https://
+        },
+        message: 'Avatar URL must start with "https://"',
+      },
+    },
+
     password: {
       type: String,
       required: [true, "Password is required"],

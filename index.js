@@ -14,6 +14,7 @@ const {
 const connectDB = require("./config/database");
 const locationRoutes = require("./routes/locationRoutes");
 const apartmentRoutes = require("./routes/apartmentRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 // Initialize Express application
 const app = express();
@@ -58,6 +59,9 @@ app.use("/api/locations", locationRoutes);
 
 // Apartment-related API routes
 app.use("/api/apartments", apartmentRoutes);
+
+// User-related API routes
+app.use("/api/users", userRoutes);
 
 // Custom 404 handler for unknown routes
 app.use(notFoundHandler);

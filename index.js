@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration to control access to server resources
 const corsOptions = {
-  origin: ["https://sufiza.netlify.app", "http://localhost:5173"], // Allowed origins
+  origin: ["https://sufiza.netlify.app", "http://localhost:5173", "http://localhost:5174"], // Allowed origins
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // Allowed HTTP methods
   allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers in requests
   credentials: true, // Allow cookies and credentials to be sent

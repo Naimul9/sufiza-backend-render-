@@ -147,9 +147,11 @@ exports.createApartment = async (req, res) => {
 
     res.status(201).json({ success: true, data: apartment });
   } catch (error) {
-    res
+   console.log(error)
+   res
       .status(500)
       .json({ success: false, message: "Failed to create apartment" });
+      
   }
 };
 

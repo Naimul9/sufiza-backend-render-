@@ -167,22 +167,30 @@ exports.userLogin = async (req, res) => {
 
     // Store tokens to browser cookies
     res.cookie("accessToken", accessToken, {
-      httpOnly: true,
+      httpOnly: process.env.NODE_ENV === "production",
       secure: true,
       signed: true,
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
     res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
+      httpOnly: process.env.NODE_ENV === "production",
       secure: true,
       signed: true,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
-    res
-      .status(200)
-      .json({ success: true, message: "Logged in successfully", data: user });
+    res.status(200).json({
+      success: true,
+      message: "Logged in successfully",
+      data: {
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        avatar: user.avatar,
+        role: user.role,
+      },
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: "Failed to logged" });
   }
@@ -219,7 +227,7 @@ exports.AccessTokenRefresh = async (req, res) => {
     const { accessToken } = generateTokens(user);
 
     res.cookie("accessToken", accessToken, {
-      httpOnly: true,
+      httpOnly: process.env.NODE_ENV === "production",
       secure: true,
       signed: true,
       maxAge: 15 * 60 * 1000, // 15 minutes

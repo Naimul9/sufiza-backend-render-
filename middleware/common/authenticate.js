@@ -14,7 +14,7 @@ function authenticateToken(req, res, next) {
   jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) {
       return res
-        .status(403)
+        .status(401)
         .json({ success: false, message: "Invalid or Expired Access Token" });
     }
 

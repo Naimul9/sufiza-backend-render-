@@ -58,6 +58,16 @@ exports.getUserDetailsById = async (req, res) => {
  */
 exports.createUser = async (req, res) => {
   try {
+    const userIsAvailable = await User.findOne({
+      email: req.body.email,
+    });
+
+    if (userIsAvailable) {
+      return res
+        .status(500)
+        .json({ success: false, message: "You are already registered." });
+    }
+
     const password = await hashPassword(req.body.password);
 
     const user = await User.create({
@@ -71,6 +81,7 @@ exports.createUser = async (req, res) => {
       data: user,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ success: false, message: "Failed to create user" });
   }
 };

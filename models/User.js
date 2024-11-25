@@ -33,7 +33,6 @@ const userSchema = new mongoose.Schema(
 
     avatar: {
       type: String,
-      required: [true, "Avatar is required"],
       default: "https://avatar.iran.liara.run/public/boy",
       validate: {
         validator: function (v) {

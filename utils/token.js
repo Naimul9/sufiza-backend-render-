@@ -2,7 +2,6 @@
 const jwt = require("jsonwebtoken");
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
-
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
 // Generate Tokens
@@ -36,19 +35,11 @@ function generateTokens(user) {
   return { accessToken, refreshToken };
 }
 
-// Verify Access Token
-function verifyAccessToken(token) {
-  try {
-    return jwt.verify(token, ACCESS_TOKEN_SECRET);
-  } catch (err) {
-    return null;
-  }
-}
-
 // Verify Refresh Token
 function verifyRefreshToken(token) {
   try {
-    return jwt.verify(token, REFRESH_TOKEN_SECRET);
+    const userInfo = jwt.verify(token, REFRESH_TOKEN_SECRET);
+    return userInfo;
   } catch (err) {
     return null;
   }
@@ -56,6 +47,5 @@ function verifyRefreshToken(token) {
 
 module.exports = {
   generateTokens,
-  verifyAccessToken,
   verifyRefreshToken,
 };

@@ -115,7 +115,7 @@ const apartmentSchema = new mongoose.Schema(
       type: String,
       lowercase: true,
       enum: {
-        values: ["north", "south", "east", "west"],
+        values: ["north facing", "south facing", "east facing", "west facing"],
         message:
           "Orientation must be 'north facing', 'south facing', 'east facing', or 'west facing'",
       },

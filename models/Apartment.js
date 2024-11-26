@@ -24,7 +24,6 @@ const apartmentSchema = new mongoose.Schema(
         trim: true,
         required: [true, "Country is required"],
         lowercase: true,
-        default: "Bangladesh",
       },
       division: {
         type: String,
@@ -53,6 +52,9 @@ const apartmentSchema = new mongoose.Schema(
             "All images must be valid URLs with supported formats (jpg, jpeg, png, gif, webp)",
         },
       },
+      video: {
+        type: [String],
+      },
       size: {
         type: Number,
         required: [true, "Size in square feet is required"],
@@ -74,14 +76,14 @@ const apartmentSchema = new mongoose.Schema(
         min: [1, "At least one toilet is required"],
       },
       drawingDining: {
-        type: Boolean,
-        required: [true, "Drawing/dining room information is required"],
-        default: false,
+        type: Number,
+        required: [true, "Number of Drawing/dining room is required"],
+        min: [1, "At least one Drawing/dining is required"],
       },
       kitchen: {
-        type: Boolean,
-        required: [true, "Kitchen information is required"],
-        default: false,
+        type: Number,
+        required: [true, "Number of kitchen is required"],
+        min: [1, "At least one kitchen is required"],
       },
     },
     buildingDetails: {
@@ -99,33 +101,31 @@ const apartmentSchema = new mongoose.Schema(
         required: [true, "Units per floor are required"],
         min: [1, "There must be at least one unit per floor"],
       },
+      lpgGas: {
+        type: String,
+        lowercase: true,
+        enum: {
+          values: ["yes", "no"],
+          message: "lpgGas must be either 'yes' or 'no'",
+        },
+        required: [true, "lpgGas is required"],
+      },
     },
     price: {
       ratePerSft: {
         type: Number,
         required: [true, "Rate per square foot is required"],
       },
-      currency: {
-        type: String,
-        required: [true, "Currency is required"],
-        default: "Tk",
-      },
     },
     orientation: {
       type: String,
-      lowercase: true,
-      enum: {
-        values: ["north facing", "south facing", "east facing", "west facing"],
-        message:
-          "Orientation must be 'north facing', 'south facing', 'east facing', or 'west facing'",
-      },
+      required: [true, "Orientation is required"],
     },
     completionStatus: {
       percentage: {
         type: Number,
         min: [0, "Completion percentage cannot be less than 0"],
         max: [100, "Completion percentage cannot exceed 100"],
-        default: 100,
       },
       condition: {
         type: String,

@@ -167,14 +167,14 @@ exports.userLogin = async (req, res) => {
 
     // Store tokens to browser cookies
     res.cookie("accessToken", accessToken, {
-      // httpOnly: process.env.NODE_ENV === "production",
+      httpOnly: process.env.NODE_ENV === "production",
       secure: true,
       signed: true,
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
     res.cookie("refreshToken", refreshToken, {
-      // httpOnly: process.env.NODE_ENV === "production",
+      httpOnly: process.env.NODE_ENV === "production",
       secure: true,
       signed: true,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -227,7 +227,7 @@ exports.AccessTokenRefresh = async (req, res) => {
     const { accessToken } = generateTokens(user);
 
     res.cookie("accessToken", accessToken, {
-      // httpOnly: process.env.NODE_ENV === "production",
+      httpOnly: process.env.NODE_ENV === "production",
       secure: true,
       signed: true,
       maxAge: 15 * 60 * 1000, // 15 minutes

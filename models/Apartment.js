@@ -53,7 +53,32 @@ const apartmentSchema = new mongoose.Schema(
         },
       },
       video: {
-        type: [String],
+        type: String,
+        validate: {
+          validator: function (v) {
+            const allowedExtensions = [
+              ".mp4",
+              ".mkv",
+              ".mov",
+              ".avi",
+              ".wmv",
+              ".flv",
+              ".webm",
+              ".mpeg",
+              ".3gp",
+              ".m4v",
+              ".ts",
+              ".ogv",
+            ];
+            return (
+              v.startsWith("https://") &&
+              allowedExtensions.some((ext) => v.toLowerCase().endsWith(ext))
+            );
+          },
+          message:
+            'The video link must start with "https://" and have a valid extension (e.g., .mp4, .mkv, .mov).',
+        },
+        required: [true, "Video link is required."],
       },
       size: {
         type: Number,

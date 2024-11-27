@@ -68,6 +68,7 @@ exports.getAllApartments = async (req, res) => {
 
     res.status(200).json({
       success: true,
+      message: "Apartment fetch successfully",
       totalApartments: totalApartmentsNumber,
       data: apartments,
     });
@@ -121,7 +122,11 @@ exports.getApartmentDetailstById = async (req, res) => {
         .json({ success: false, message: "Apartment not found" });
     }
 
-    res.status(200).json({ success: true, data: apartment });
+    res.status(200).json({
+      success: true,
+      message: "Apartment fetch successfully",
+      data: apartment,
+    });
   } catch (error) {
     if (error.kind === "ObjectId") {
       return res
@@ -145,13 +150,15 @@ exports.createApartment = async (req, res) => {
   try {
     const apartment = await Apartment.create(req.body);
 
-    res.status(201).json({ success: true, data: apartment });
+    res.status(201).json({
+      success: true,
+      message: "Apartment created successfully",
+      data: apartment,
+    });
   } catch (error) {
-   console.log(error)
-   res
+    res
       .status(500)
       .json({ success: false, message: "Failed to create apartment" });
-      
   }
 };
 
@@ -177,7 +184,11 @@ exports.updateApartment = async (req, res) => {
         .json({ success: false, message: "Apartment not found" });
     }
 
-    res.status(200).json({ success: true, data: apartment });
+    res.status(200).json({
+      success: true,
+      message: "Apartment updated successfully",
+      data: apartment,
+    });
   } catch (error) {
     if (error.kind === "ObjectId") {
       return res

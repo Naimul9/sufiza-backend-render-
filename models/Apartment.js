@@ -43,43 +43,19 @@ const apartmentSchema = new mongoose.Schema(
       images: {
         type: [String],
         required: [true, "Images field is required"],
-        validate: {
-          validator: function (images) {
-            return images.every((image) =>
-              /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/.test(image)
-            );
-          },
-          message:
-            "All images must be valid URLs with supported formats (jpg, jpeg, png, gif, webp)",
-        },
+        // validate: {
+        //   validator: function (images) {
+        //     return images.every((image) =>
+        //       /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/.test(image)
+        //     );
+        //   },
+        //   message:
+        //     "All images must be valid URLs with supported formats (jpg, jpeg, png, gif, webp)",
+        // },
       },
       video: {
         type: String,
-        validate: {
-          validator: function (v) {
-            const allowedExtensions = [
-              ".mp4",
-              ".mkv",
-              ".mov",
-              ".avi",
-              ".wmv",
-              ".flv",
-              ".webm",
-              ".mpeg",
-              ".3gp",
-              ".m4v",
-              ".ts",
-              ".ogv",
-            ];
-            return (
-              v.startsWith("https://") &&
-              allowedExtensions.some((ext) => v.toLowerCase().endsWith(ext))
-            );
-          },
-          message:
-            'The video link must start with "https://" and have a valid extension (e.g., .mp4, .mkv, .mov).',
-        },
-        required: [true, "Video link is required."],
+        // validate: {
       },
       size: {
         type: Number,

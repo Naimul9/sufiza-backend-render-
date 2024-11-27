@@ -171,9 +171,9 @@ exports.userLogin = async (req, res) => {
       secure: true, // ensures cookie is sent over https
       signed: true, // signs the cookie (requires cookie parser secret)
       maxAge: 15 * 60 * 1000, // 15 minutes in milliseconds
-      sameSite: "strict", // restricts cross-site requests (strict, lax, none)
+      sameSite: "none", // restricts cross-site requests (strict, lax, none)
       path: "/", // cookie valid for all paths
-      // domain: undefined,
+      domain: undefined,
     });
 
     res.cookie("refreshToken", refreshToken, {
@@ -181,9 +181,9 @@ exports.userLogin = async (req, res) => {
       secure: true, // ensures cookie is sent over https
       signed: true, // signs the cookie (requires cookie parser secret)
       maxAge: 365 * 24 * 60 * 60 * 1000, // 1 year in milliseconds
-      sameSite: "strict", // restricts cross-site requests (strict, lax, none)
+      sameSite: "none", // restricts cross-site requests (strict, lax, none)
       path: "/", // cookie valid for all paths
-      // domain: undefined,
+      domain: undefined,
     });
 
     res.status(200).json({

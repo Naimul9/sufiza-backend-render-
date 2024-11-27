@@ -28,26 +28,37 @@ exports.getAllApartments = async (req, res) => {
     // the query object
     const query = {};
 
-    // search by country
+    // Search by country
     if (country && country.toLowerCase() !== "all") {
-      query["address.country"] = country.toLowerCase();
+      query["address.country"] = { $regex: country, $options: "i" };
     }
 
-    // search by division or district
-    if (division && country.toLowerCase() !== "all") {
-      query["address.division"] = division.toLowerCase();
-    } else if (districts && country.toLowerCase() !== "all") {
-      query["address.districtsOrThana"] = districts.toLowerCase();
+    // Search by division
+    if (
+      division &&
+      division.toLowerCase() !== "all" &&
+      country.toLowerCase() !== "all"
+    ) {
+      query["address.division"] = { $regex: division, $options: "i" };
     }
 
-    // search by objective (buy, rent, sell)
+    // Search by districts
+    if (
+      districts &&
+      districts.toLowerCase() !== "all" &&
+      country.toLowerCase() !== "all"
+    ) {
+      query["address.districtsOrThana"] = { $regex: districts, $options: "i" };
+    }
+
+    // Search by objective (buy, rent, sell)
     if (objective && objective.toLowerCase() !== "all") {
-      query["objective.status"] = objective.toLowerCase();
+      query["objective.status"] = { $regex: objective, $options: "i" };
     }
 
-    // filter by property type (residential, commercial)
+    // Filter by property type (residential, commercial)
     if (sortPropertie && sortPropertie.toLowerCase() !== "all") {
-      query["properties.type"] = sortPropertie.toLowerCase();
+      query["properties.type"] = { $regex: sortPropertie, $options: "i" };
     }
 
     // filter by property size range
@@ -65,6 +76,9 @@ exports.getAllApartments = async (req, res) => {
     const apartments = await Apartment.find(query)
       .skip(skipProducts)
       .limit(perPageProducts);
+
+    console.log(query);
+    // console.log(apartments);
 
     res.status(200).json({
       success: true,

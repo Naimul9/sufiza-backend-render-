@@ -19,6 +19,9 @@ const userRoutes = require("./routes/userRoutes");
 // Initialize Express application
 const app = express();
 
+// Enable trust proxy for secure cookies behind a proxy
+app.set("trust proxy", 1);
+
 // Define server port
 const PORT = process.env.PORT || 5000;
 

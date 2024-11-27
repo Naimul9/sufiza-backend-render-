@@ -77,9 +77,6 @@ exports.getAllApartments = async (req, res) => {
       .skip(skipProducts)
       .limit(perPageProducts);
 
-    console.log(query);
-    // console.log(apartments);
-
     res.status(200).json({
       success: true,
       message: "Apartment fetch successfully",

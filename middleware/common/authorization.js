@@ -10,9 +10,7 @@ async function checkIfAdmin(req, res, next) {
     );
 
     if (user?.role !== "admin") {
-      return res
-        .status(403)
-        .json({ success: false, message: "Forbidden access" });
+      return res.status(403).json({ success: false, message: "Forbidden" });
     }
 
     next();
@@ -28,9 +26,7 @@ function checkUserAccess(req, res, next) {
 
   // Verify if the current user is authorized
   if (currentUserEmail !== requestUserEmail) {
-    return res
-      .status(403)
-      .json({ success: false, message: "Forbidden access" });
+    return res.status(403).json({ success: false, message: "Forbidden" });
   }
 
   next();

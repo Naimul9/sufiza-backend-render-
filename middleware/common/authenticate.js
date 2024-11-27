@@ -8,14 +8,12 @@ function authenticateToken(req, res, next) {
   const accessToken = req.signedCookies.accessToken;
 
   if (!accessToken) {
-    return res.status(401).json({ success: false, message: "No access token" });
+    return res.status(401).json({ success: false, message: "Unauthorized" });
   }
 
   jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid or Expired Access Token" });
+      return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
     req.user = user; // Attach user info to request

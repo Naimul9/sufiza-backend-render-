@@ -167,17 +167,23 @@ exports.userLogin = async (req, res) => {
 
     // Store tokens to browser cookies
     res.cookie("accessToken", accessToken, {
-      httpOnly: process.env.NODE_ENV === "production",
-      secure: true,
-      signed: true,
-      maxAge: 15 * 60 * 1000, // 15 minutes
+      httponly: true, // cookie accessible only by the web server
+      secure: true, // ensures cookie is sent over https
+      signed: true, // signs the cookie (requires cookie parser secret)
+      maxAge: 15 * 60 * 1000, // 15 minutes in milliseconds
+      samesite: "none", // restricts cross-site requests (strict, lax, none)
+      path: "/", // cookie valid for all paths
+      domain: undefined, // cookie valid for any domain
     });
 
     res.cookie("refreshToken", refreshToken, {
-      httpOnly: process.env.NODE_ENV === "production",
-      secure: true,
-      signed: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      httponly: true, // cookie accessible only by the web server
+      secure: true, // ensures cookie is sent over https
+      signed: true, // signs the cookie (requires cookie parser secret)
+      maxage: 365 * 24 * 60 * 60 * 1000, // 1 year in milliseconds
+      samesite: "none", // restricts cross-site requests (strict, lax, none)
+      path: "/", // cookie valid for all paths
+      domain: undefined, // cookie valid for any domain
     });
 
     res.status(200).json({
@@ -217,9 +223,7 @@ exports.AccessTokenRefresh = async (req, res) => {
   const refreshToken = req.signedCookies.refreshToken;
 
   if (!refreshToken)
-    return res
-      .status(401)
-      .json({ success: false, message: "No refresh token" });
+    return res.status(401).json({ success: false, message: "Unauthorized" });
 
   try {
     const user = verifyRefreshToken(refreshToken);
@@ -227,14 +231,17 @@ exports.AccessTokenRefresh = async (req, res) => {
     const { accessToken } = generateTokens(user);
 
     res.cookie("accessToken", accessToken, {
-      httpOnly: process.env.NODE_ENV === "production",
-      secure: true,
-      signed: true,
-      maxAge: 15 * 60 * 1000, // 15 minutes
+      httponly: true, // cookie accessible only by the web server
+      secure: true, // ensures cookie is sent over https
+      signed: true, // signs the cookie (requires cookie parser secret)
+      maxAge: 15 * 60 * 1000, // 15 minutes in milliseconds
+      samesite: "none", // restricts cross-site requests (strict, lax, none)
+      path: "/", // cookie valid for all paths
+      domain: undefined, // cookie valid for any domain
     });
 
     res.status(200).json({ success: true, message: "Access token refreshed" });
   } catch (error) {
-    res.status(403).json({ success: false, message: "Invalid refresh token" });
+    res.status(401).json({ success: false, message: "Unauthorized" });
   }
 };

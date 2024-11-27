@@ -6,7 +6,8 @@ const apartmentSchema = new mongoose.Schema(
   {
     address: {
       houseNumber: {
-        type: Number,
+        type: String,
+        trim: true,
         required: [true, "House number is required"],
       },
       road: {

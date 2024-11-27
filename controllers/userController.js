@@ -167,23 +167,23 @@ exports.userLogin = async (req, res) => {
 
     // Store tokens to browser cookies
     res.cookie("accessToken", accessToken, {
-      httponly: true, // cookie accessible only by the web server
+      httpOnly: true, // cookie accessible only by the web server
       secure: true, // ensures cookie is sent over https
       signed: true, // signs the cookie (requires cookie parser secret)
       maxAge: 15 * 60 * 1000, // 15 minutes in milliseconds
-      samesite: "none", // restricts cross-site requests (strict, lax, none)
+      sameSite: "strict", // restricts cross-site requests (strict, lax, none)
       path: "/", // cookie valid for all paths
-      domain: undefined, // cookie valid for any domain
+      // domain: undefined,
     });
 
     res.cookie("refreshToken", refreshToken, {
-      httponly: true, // cookie accessible only by the web server
+      httpOnly: true, // cookie accessible only by the web server
       secure: true, // ensures cookie is sent over https
       signed: true, // signs the cookie (requires cookie parser secret)
-      maxage: 365 * 24 * 60 * 60 * 1000, // 1 year in milliseconds
-      samesite: "none", // restricts cross-site requests (strict, lax, none)
+      maxAge: 365 * 24 * 60 * 60 * 1000, // 1 year in milliseconds
+      sameSite: "strict", // restricts cross-site requests (strict, lax, none)
       path: "/", // cookie valid for all paths
-      domain: undefined, // cookie valid for any domain
+      // domain: undefined,
     });
 
     res.status(200).json({
@@ -231,11 +231,11 @@ exports.AccessTokenRefresh = async (req, res) => {
     const { accessToken } = generateTokens(user);
 
     res.cookie("accessToken", accessToken, {
-      httponly: true, // cookie accessible only by the web server
+      httpOnly: true, // cookie accessible only by the web server
       secure: true, // ensures cookie is sent over https
       signed: true, // signs the cookie (requires cookie parser secret)
       maxAge: 15 * 60 * 1000, // 15 minutes in milliseconds
-      samesite: "none", // restricts cross-site requests (strict, lax, none)
+      sameSite: "none", // restricts cross-site requests (strict, lax, none)
       path: "/", // cookie valid for all paths
       domain: undefined, // cookie valid for any domain
     });
